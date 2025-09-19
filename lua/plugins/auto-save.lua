@@ -1,0 +1,27 @@
+return {
+  "pocco81/auto-save.nvim",
+  event = "VeryLazy",
+  config = function()
+    require("auto-save").setup({
+      enabled = true, -- nyalain auto save
+      execution_message = { -- pesan waktu auto save
+        message = function() -- kasih notifikasi kecil
+          return ("AutoSave: " .. vim.fn.strftime("%H:%M:%S"))
+        end,
+        dim = 0.18,
+        cleaning_interval = 1250,
+      },
+      trigger_events = { "InsertLeave", "TextChanged" }, -- kapan auto save jalan
+      condition = function(buf)
+        local fn = vim.fn
+        local utils = require("auto-save.utils.data")
+        if fn.getbufvar(buf, "&modifiable") == 1 and utils.not_in(fn.getbufvar(buf, "&filetype"), { "gitcommit" }) then
+          return true
+        end
+        return false
+      end,
+      write_all_buffers = false, -- true = save semua buffer
+      debounce_delay = 135,
+    })
+  end,
+}
