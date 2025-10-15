@@ -1,103 +1,58 @@
 return {
-  -- pyright
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        pyright = {},
+    dependencies = { "jose-elias-alvarez/typescript.nvim" },
+    config = function()
+      local lspconfig = require("lspconfig")
 
-        -- HTML
-        html = {
-          filetypes = { "html", "htmldjango" },
+      -- Pyright
+      lspconfig.pyright.setup({})
+
+      -- HTML
+      lspconfig.html.setup({
+        filetypes = { "html", "htmldjango" },
+      })
+
+      -- TailwindCSS
+      lspconfig.tailwindcss.setup({
+        filetypes = {
+          "html",
+          "javascript",
+          "typescript",
+          "javascriptreact",
+          "typescriptreact",
+          "vue",
+          "svelte",
+          "astro",
         },
+      })
 
-        -- TailwindCSS
-        tailwindcss = {
-          filetypes = {
-            "html",
-            "javascript",
-            "typescript",
-            "javascriptreact",
-            "typescriptreact",
-            "vue",
-            "svelte",
-            "astro",
+      -- Rust
+      lspconfig.rust_analyzer.setup({
+        settings = {
+          ["rust-analyzer"] = {
+            cargo = { allFeatures = true },
+            checkOnSave = { command = "clippy" },
           },
         },
+      })
 
-        -- Rust (rust-analyzer)
-        rust_analyzer = {
+      -- TypeScript / JavaScript
+      require("typescript").setup({
+        server = {
+          on_attach = function(_, bufnr)
+            local map = function(mode, lhs, rhs, desc)
+              vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+            end
+            map("n", "<leader>co", "TypescriptOrganizeImports", "Organize Imports")
+            map("n", "<leader>cR", "TypescriptRenameFile", "Rename File")
+          end,
           settings = {
-            ["rust-analyzer"] = {
-              cargo = { allFeatures = true },
-              checkOnSave = {
-                command = "clippy",
-              },
-              inlayHints = {
-                lifetimeElisionHints = {
-                  enable = true,
-                  useParameterNames = true,
-                },
-                reborrowHints = { enable = true },
-              },
-            },
+            typescript = { inlayHints = { includeInlayParameterNameHints = "none" } },
+            javascript = { inlayHints = { includeInlayParameterNameHints = "none" } },
           },
         },
-      },
-    },
+      })
+    end,
   },
-
-  -- tsserver + typescript.nvim
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "jose-elias-alvarez/typescript.nvim",
-      init = function()
-        require("lazyvim.util").lsp.on_attach(function(_, buffer)
-          vim.keymap.set("n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
-          vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { buffer = buffer, desc = "Rename File" })
-        end)
-      end,
-    },
-    opts = {
-      servers = {
-        tsserver = {
-          settings = {
-            typescript = {
-              inlayHints = {
-                parameterNames = { enabled = "none" },
-                parameterTypes = { enabled = false },
-                variableTypes = { enabled = false },
-                propertyDeclarationTypes = { enabled = false },
-                functionLikeReturnTypes = { enabled = false },
-              },
-            },
-            javascript = {
-              inlayHints = {
-                parameterNames = { enabled = "none" },
-                parameterTypes = { enabled = false },
-                variableTypes = { enabled = false },
-                propertyDeclarationTypes = { enabled = false },
-                functionLikeReturnTypes = { enabled = false },
-              },
-            },
-          },
-        },
-      },
-      setup = {
-        tsserver = function(_, opts)
-          -- ⬇️ Matikan snippet support supaya ga auto isi (code)
-          local capabilities = vim.lsp.protocol.make_client_capabilities()
-          capabilities.textDocument.completion.completionItem.snippetSupport = false
-          opts.capabilities = vim.tbl_deep_extend("force", opts.capabilities or {}, capabilities)
-
-          require("typescript").setup({ server = opts })
-          return true
-        end,
-      },
-    },
-  },
-
-  -- typescript extra spec
-  { import = "lazyvim.plugins.extras.lang.typescript" },
 }
