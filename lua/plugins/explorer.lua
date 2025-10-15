@@ -12,8 +12,9 @@ return {
     },
   },
 
-  -- Tambahkan Neo-tree
-
+  -- ==============================
+  -- 🟢 Neo-tree (aktif sekarang)
+  -- ==============================
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -40,12 +41,11 @@ return {
           },
           git_status = {
             symbols = {
-              -- Status Git
-              added = "", -- +
-              modified = "", -- M
-              deleted = "", -- D
-              renamed = "", -- R
-              untracked = "★", -- ?
+              added = "",
+              modified = "",
+              deleted = "",
+              renamed = "",
+              untracked = "★",
               ignored = "◌",
               unstaged = "",
               staged = "",
@@ -63,4 +63,42 @@ return {
       vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
     end,
   },
+
+  -- ==========================================
+  -- 🔵 Nvim-tree (nonaktif, bisa aktifin nanti)
+  -- ==========================================
+  -- {
+  --   "nvim-tree/nvim-tree.lua",
+  --   dependencies = {
+  --     "nvim-tree/nvim-web-devicons",
+  --   },
+  --   config = function()
+  --     require("nvim-tree").setup({
+  --       view = {
+  --         width = 30,
+  --         side = "left",
+  --       },
+  --       renderer = {
+  --         icons = {
+  --           glyphs = {
+  --             folder = {
+  --               arrow_closed = "",
+  --               arrow_open = "",
+  --             },
+  --           },
+  --         },
+  --       },
+  --       filters = {
+  --         dotfiles = false,
+  --       },
+  --       git = {
+  --         enable = true,
+  --         ignore = false,
+  --       },
+  --     })
+
+  --     -- Keymap buka Nvim-tree
+  --     vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle Nvim-tree" })
+  --   end,
+  -- },
 }
