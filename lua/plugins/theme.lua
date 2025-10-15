@@ -4,7 +4,7 @@ return {
     lazy = false,
     priority = 1000,
     opts = {
-      style = "night", -- ada: "storm", "moon", "night", "day"
+      style = "storm", -- ada: "storm", "moon", "night", "day"
       transparent = false,
     },
     config = function(_, opts)

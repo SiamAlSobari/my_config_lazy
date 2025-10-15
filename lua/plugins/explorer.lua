@@ -3,7 +3,7 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
-      explorer = false, -- ❌ matikan explorer bawaan Snacks
+      explorer = { enabled = false },
       picker = {
         sources = {
           files = { show_hidden = true, hidden = true },

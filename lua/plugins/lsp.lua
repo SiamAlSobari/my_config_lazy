@@ -1,3 +1,5 @@
+--lsp config /plugin/lsp.lua
+
 return {
   {
     "neovim/nvim-lspconfig",
@@ -5,7 +7,7 @@ return {
     config = function()
       local lspconfig = require("lspconfig")
 
-      -- Pyright
+      -- Python
       lspconfig.pyright.setup({})
 
       -- HTML
@@ -48,8 +50,31 @@ return {
             map("n", "<leader>cR", "TypescriptRenameFile", "Rename File")
           end,
           settings = {
-            typescript = { inlayHints = { includeInlayParameterNameHints = "none" } },
-            javascript = { inlayHints = { includeInlayParameterNameHints = "none" } },
+            typescript = {
+              inlayHints = { includeInlayParameterNameHints = "none" },
+            },
+            javascript = {
+              inlayHints = { includeInlayParameterNameHints = "none" },
+            },
+          },
+        },
+      })
+
+      -- 🌙 Lua (buat Neovim config & plugin development)
+      lspconfig.lua_ls.setup({
+        settings = {
+          Lua = {
+            runtime = {
+              version = "LuaJIT", -- versi runtime Neovim
+            },
+            diagnostics = {
+              globals = { "vim" }, -- biar 'vim' gak dianggap undefined
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true), -- biar kenal semua API nvim
+              checkThirdParty = false, -- hindari prompt popup "need config"
+            },
+            telemetry = { enable = false },
           },
         },
       })
