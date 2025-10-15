@@ -16,6 +16,7 @@ return {
         "tsx",
         "typescriptreact",
         "svelte",
+        "prisma",
       },
     },
   },

@@ -1,5 +1,4 @@
---lsp config /plugin/lsp.lua
-
+-- ~/.config/nvim/lua/plugins/lsp.lua
 return {
   {
     "neovim/nvim-lspconfig",
@@ -60,24 +59,23 @@ return {
         },
       })
 
-      -- 🌙 Lua (buat Neovim config & plugin development)
+      -- 🌙 Lua
       lspconfig.lua_ls.setup({
         settings = {
           Lua = {
-            runtime = {
-              version = "LuaJIT", -- versi runtime Neovim
-            },
-            diagnostics = {
-              globals = { "vim" }, -- biar 'vim' gak dianggap undefined
-            },
+            runtime = { version = "LuaJIT" },
+            diagnostics = { globals = { "vim" } },
             workspace = {
-              library = vim.api.nvim_get_runtime_file("", true), -- biar kenal semua API nvim
-              checkThirdParty = false, -- hindari prompt popup "need config"
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
             },
             telemetry = { enable = false },
           },
         },
       })
+
+      -- 💎 Prisma
+      lspconfig.prismals.setup({})
     end,
   },
 }

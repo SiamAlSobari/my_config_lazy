@@ -19,3 +19,9 @@ vim.keymap.set("n", "<A-Down>", ":m .+1<CR>==", { desc = "Move line down" })
 -- Visual mode: move block up/down pakai Alt + panah
 vim.keymap.set("v", "<A-Up>", ":m '<-2<CR>gv=gv", { desc = "Move block up" })
 vim.keymap.set("v", "<A-Down>", ":m '>+1<CR>gv=gv", { desc = "Move block down" })
+
+-- Manual trigger completion Blink CMP pakai Ctrl+Space
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show documentation" })
+vim.keymap.set("i", "<C-Space>", function()
+  require("blink.cmp").show()
+end, { desc = "Trigger completion manually" })
